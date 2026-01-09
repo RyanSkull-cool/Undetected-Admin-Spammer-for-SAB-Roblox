@@ -173,8 +173,7 @@ local function createEntry(player)
 		";ragdoll ",
 		";tiny ",
 		";jumpscare ",
-		";rocket ",
-		";jail "
+		";rocket "
 	}
 
 	button.MouseButton1Click:Connect(function()
