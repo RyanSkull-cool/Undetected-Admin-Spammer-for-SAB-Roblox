@@ -170,7 +170,6 @@ local function createEntry(player)
 		";morph ",
 		";inverse ",
 		";balloon ",
-		";ragdoll ",
 		";tiny ",
 		";jumpscare ",
 		";rocket "
