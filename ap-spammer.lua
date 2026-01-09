@@ -168,11 +168,11 @@ local function createEntry(player)
 	local running = false
 	local commands = {
 		";morph ",
+		";rocket ",
 		";inverse ",
 		";balloon ",
 		";tiny ",
-		";jumpscare ",
-		";rocket "
+		";jumpscare "
 	}
 
 	button.MouseButton1Click:Connect(function()
