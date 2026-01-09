@@ -1,15 +1,10 @@
--- Player List GUI + Adjustable Delay Controller (FIXED)
-
 local Players = game:GetService("Players")
 local TextChatService = game:GetService("TextChatService")
 
--- ================= CONFIG =================
 local delayBetweenMessages = 0.1
 local MIN_DELAY = 0.1
 local MAX_DELAY = 5
--- =========================================
 
--- Cleanup
 if game.CoreGui:FindFirstChild("PlayerListGUI") then
 	game.CoreGui.PlayerListGUI:Destroy()
 end
@@ -19,7 +14,6 @@ gui.Name = "PlayerListGUI"
 gui.ResetOnSpawn = false
 gui.Parent = game.CoreGui
 
--- ================= MAIN WINDOW =================
 local main = Instance.new("Frame")
 main.Size = UDim2.new(0, 420, 0, 500)
 main.Position = UDim2.new(0.5, -210, 0.5, -250)
@@ -30,7 +24,6 @@ main.Draggable = true
 main.Parent = gui
 Instance.new("UICorner", main).CornerRadius = UDim.new(0, 12)
 
--- ================= CONTROL PANEL (BELOW) =================
 local control = Instance.new("Frame")
 control.Size = UDim2.new(0, 420, 0, 60)
 control.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
@@ -38,7 +31,6 @@ control.BorderSizePixel = 0
 control.Parent = gui
 Instance.new("UICorner", control).CornerRadius = UDim.new(0, 10)
 
--- Position control BELOW main & follow it
 local function updateControlPos()
 	control.Position = main.Position + UDim2.new(0, 0, 0, main.Size.Y.Offset + 10)
 end
@@ -46,7 +38,6 @@ updateControlPos()
 
 main:GetPropertyChangedSignal("Position"):Connect(updateControlPos)
 
--- Delay label
 local delayLabel = Instance.new("TextLabel")
 delayLabel.Size = UDim2.new(1, -120, 1, 0)
 delayLabel.Position = UDim2.new(0, 12, 0, 0)
@@ -62,7 +53,6 @@ local function updateLabel()
 end
 updateLabel()
 
--- Minus button
 local minus = Instance.new("TextButton")
 minus.Size = UDim2.new(0, 40, 0, 40)
 minus.Position = UDim2.new(1, -90, 0.5, -20)
@@ -79,7 +69,6 @@ minus.MouseButton1Click:Connect(function()
 	updateLabel()
 end)
 
--- Plus button
 local plus = Instance.new("TextButton")
 plus.Size = UDim2.new(0, 40, 0, 40)
 plus.Position = UDim2.new(1, -45, 0.5, -20)
@@ -96,7 +85,6 @@ plus.MouseButton1Click:Connect(function()
 	updateLabel()
 end)
 
--- ================= TITLE =================
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 40)
 title.BackgroundTransparency = 1
@@ -106,7 +94,6 @@ title.TextSize = 18
 title.TextColor3 = Color3.new(1,1,1)
 title.Parent = main
 
--- ================= LIST =================
 local list = Instance.new("ScrollingFrame")
 list.Position = UDim2.new(0, 0, 0, 45)
 list.Size = UDim2.new(1, 0, 1, -45)
@@ -124,7 +111,6 @@ layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 	list.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 10)
 end)
 
--- ================= PLAYER ENTRY =================
 local function createEntry(player)
 	local entry = Instance.new("Frame")
 	entry.Size = UDim2.new(1, -12, 0, 70)
@@ -133,7 +119,6 @@ local function createEntry(player)
 	entry.Parent = list
 	Instance.new("UICorner", entry).CornerRadius = UDim.new(0, 10)
 
-	-- Avatar
 	local avatar = Instance.new("ImageLabel")
 	avatar.Size = UDim2.new(0, 50, 0, 50)
 	avatar.Position = UDim2.new(0, 10, 0.5, -25)
@@ -147,7 +132,6 @@ local function createEntry(player)
 	)
 	avatar.Image = thumb
 
-	-- Display name
 	local display = Instance.new("TextLabel")
 	display.Position = UDim2.new(0, 70, 0, 10)
 	display.Size = UDim2.new(1, -190, 0, 22)
@@ -159,7 +143,6 @@ local function createEntry(player)
 	display.TextColor3 = Color3.new(1,1,1)
 	display.Parent = entry
 
-	-- Username
 	local username = Instance.new("TextLabel")
 	username.Position = UDim2.new(0, 70, 0, 34)
 	username.Size = UDim2.new(1, -190, 0, 18)
@@ -171,7 +154,6 @@ local function createEntry(player)
 	username.TextColor3 = Color3.fromRGB(180,180,180)
 	username.Parent = entry
 
-	-- Button
 	local button = Instance.new("TextButton")
 	button.Size = UDim2.new(0, 90, 0, 36)
 	button.Position = UDim2.new(1, -100, 0.5, -18)
@@ -186,12 +168,13 @@ local function createEntry(player)
 	local running = false
 	local commands = {
 		";morph ",
-		";rocket ",
+		";inverse ",
 		";balloon ",
 		";ragdoll ",
 		";tiny ",
 		";jumpscare ",
-		";inverse "
+		";rocket ",
+		";jail "
 	}
 
 	button.MouseButton1Click:Connect(function()
@@ -217,7 +200,6 @@ local function createEntry(player)
 	end)
 end
 
--- ================= REFRESH =================
 local function refresh()
 	for _, c in ipairs(list:GetChildren()) do
 		if c:IsA("Frame") then c:Destroy() end
